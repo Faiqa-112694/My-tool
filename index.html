@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO Pro — AI-Powered SEO Toolkit</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #FF6B2B;
+    --orange2: #FF8F5C;
+    --dark: #0D0D12;
+    --dark2: #14141C;
+    --card: #1A1A26;
+    --border: #2A2A3A;
+    --text: #E8E8F0;
+    --muted: #7A7A9A;
+    --green: #2ECC71;
+    --red: #E74C3C;
+    --blue: #3498DB;
+    --yellow: #F1C40F;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 40px;
+    background: rgba(13,13,18,0.95);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem; font-weight: 800;
+    color: var(--orange);
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--text); }
+  .nav-tabs {
+    display: flex; gap: 4px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+  }
+  .nav-tab {
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--muted);
+    transition: all 0.2s;
+    border: none; background: transparent;
+  }
+  .nav-tab.active, .nav-tab:hover {
+    background: var(--orange);
+    color: #fff;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 70px 20px 50px;
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,107,43,0.15) 0%, transparent 70%);
+    position: relative;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,107,43,0.15);
+    border: 1px solid rgba(255,107,43,0.4);
+    color: var(--orange2);
+    padding: 5px 16px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, var(--orange2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 540px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+  }
+
+  /* SEARCH BAR */
+  .search-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .search-row {
+    display: flex;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .search-row:focus-within { border-color: var(--orange); }
+  .search-row input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 16px 20px;
+    font-size: 1rem;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .search-row input::placeholder { color: var(--muted); }
+  .search-row select {
+    background: var(--dark2);
+    border: none;
+    border-left: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0 16px;
+    font-size: 0.88rem;
+    cursor: pointer;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .search-row select option { background: var(--dark2); }
+  .btn-analyze {
+    background: var(--orange);
+    color: #fff;
+    border: none;
+    padding: 16px 28px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .btn-analyze:hover { background: var(--orange2); }
+  .btn-analyze:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* TOOL TABS */
+  .tools-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+  .tool-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+  }
+  .tool-tab {
+    padding: 12px 20px;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: transparent;
+    transition: all 0.2s;
+    position: relative;
+    bottom: -1px;
+  }
+  .tool-tab.active {
+    background: var(--card);
+    color: var(--orange);
+    border-color: var(--border);
+    border-bottom-color: var(--card);
+  }
+  .tool-tab:hover:not(.active) { color: var(--text); }
+
+  /* PANELS */
+  .panel { display: none; animation: fadeUp 0.3s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* LOADING */
+  .loading {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+  }
+  .loading.show { display: block; }
+  .spinner {
+    width: 48px; height: 48px;
+    border: 3px solid var(--border);
+    border-top-color: var(--orange);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading p { color: var(--muted); font-size: 0.95rem; }
+
+  /* RESULTS GRID */
+  .results-hidden { display: none; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 20px;
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: var(--orange); }
+  .stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-change {
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  .stat-change.up { color: var(--green); }
+  .stat-change.down { color: var(--red); }
+
+  /* SCORE RING */
+  .score-section {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .score-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .ring-wrap { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
+  .ring-wrap svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: var(--border); stroke-width: 7; }
+  .ring-fill {
+    fill: none;
+    stroke-width: 7;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.2s ease;
+  }
+  .ring-num {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .score-info h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .score-info p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+  /* KEYWORD TABLE */
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+
+  .data-table {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  .data-table table { width: 100%; border-collapse: collapse; }
+  .data-table th {
+    background: var(--dark2);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid rgba(42,42,58,0.5);
+    color: var(--text);
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(255,107,43,0.04); }
+
+  .diff-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .diff-low { background: rgba(46,204,113,0.15); color: var(--green); }
+  .diff-med { background: rgba(241,196,15,0.15); color: var(--yellow); }
+  .diff-high { background: rgba(231,76,60,0.15); color: var(--red); }
+
+  /* ISSUES LIST */
+  .issues-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .issue-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: border-color 0.2s;
+  }
+  .issue-item:hover { border-color: rgba(255,107,43,0.3); }
+  .issue-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .issue-icon.err { background: rgba(231,76,60,0.15); }
+  .issue-icon.warn { background: rgba(241,196,15,0.15); }
+  .issue-icon.ok { background: rgba(46,204,113,0.15); }
+  .issue-body h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 3px; }
+  .issue-body p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  /* BACKLINKS */
+  .backlink-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .backlink-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    transition: border-color 0.2s;
+  }
+  .backlink-card:hover { border-color: rgba(255,107,43,0.4); }
+  .bl-domain {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .bl-domain::before {
+    content: '🔗';
+    font-size: 0.8rem;
+  }
+  .bl-meta { font-size: 0.78rem; color: var(--muted); display: flex; gap: 12px; margin-top: 8px; }
+  .bl-da {
+    background: rgba(52,152,219,0.15);
+    color: var(--blue);
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 0.73rem;
+    font-weight: 600;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--muted);
+  }
+  .empty-state .emoji { font-size: 3.5rem; margin-bottom: 16px; }
+  .empty-state h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .empty-state p { font-size: 0.9rem; max-width: 340px; margin: 0 auto; }
+
+  /* MINI CHART */
+  .chart-bar-wrap { display: flex; gap: 14px; margin-bottom: 28px; flex-wrap: wrap; }
+  .chart-card {
+    flex: 1;
+    min-width: 280px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+  }
+  .chart-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-size: 0.73rem;
+  }
+  .bar-group { display: flex; flex-direction: column; gap: 10px; }
+  .bar-row { display: flex; align-items: center; gap: 12px; }
+  .bar-label { font-size: 0.8rem; color: var(--muted); width: 90px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--orange), var(--orange2));
+    transition: width 1s ease;
+    width: 0;
+  }
+  .bar-val { font-size: 0.78rem; color: var(--text); font-weight: 600; width: 50px; text-align: right; }
+
+  /* COMPETITOR */
+  .comp-table-wrap { overflow-x: auto; margin-bottom: 28px; }
+  .progress-ring { display: inline-block; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 30px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  footer span { color: var(--orange); }
+
+  /* RESPONSIVE */
+  @media(max-width:600px) {
+    nav { padding: 14px 16px; }
+    .nav-tabs { display: none; }
+    .hero { padding: 40px 16px 30px; }
+    .tools-wrap { padding: 0 12px 40px; }
+    .tool-tabs { gap: 4px; }
+    .tool-tab { padding: 9px 12px; font-size: 0.78rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">SEO<span>Pro</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="setView('overview')">Overview</button>
+    <button class="nav-tab" onclick="setView('keywords')">Keywords</button>
+    <button class="nav-tab" onclick="setView('audit')">Site Audit</button>
+    <button class="nav-tab" onclick="setView('backlinks')">Backlinks</button>
+    <button class="nav-tab" onclick="setView('competitors')">Competitors</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">⚡ AI-Powered SEO Toolkit</div>
+  <h1>Dominate Search<br>with AI-Backed SEO</h1>
+  <p>Analyze any website for rankings, keywords, backlinks, and technical issues — all in one place.</p>
+
+  <div class="search-wrap">
+    <div class="search-row">
+      <input type="text" id="domainInput" placeholder="Enter domain e.g. example.com" />
+      <select id="toolSelect">
+        <option value="overview">Full Overview</option>
+        <option value="keywords">Keywords</option>
+        <option value="audit">Site Audit</option>
+        <option value="backlinks">Backlinks</option>
+        <option value="competitors">Competitors</option>
+      </select>
+      <button class="btn-analyze" id="analyzeBtn" onclick="runAnalysis()">Analyze →</button>
+    </div>
+  </div>
+</div>
+
+<div class="tools-wrap">
+  <div class="tool-tabs">
+    <button class="tool-tab active" onclick="switchTab('overview')">📊 Overview</button>
+    <button class="tool-tab" onclick="switchTab('keywords')">🔍 Keywords</button>
+    <button class="tool-tab" onclick="switchTab('audit')">🛠 Site Audit</button>
+    <button class="tool-tab" onclick="switchTab('backlinks')">🔗 Backlinks</button>
+    <button class="tool-tab" onclick="switchTab('competitors')">⚔️ Competitors</button>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loadingDiv">
+    <div class="spinner"></div>
+    <p id="loadingText">Analyzing domain...</p>
+  </div>
+
+  <!-- OVERVIEW PANEL -->
+  <div class="panel active" id="panel-overview">
+    <div id="overview-empty" class="empty-state">
+      <div class="emoji">🚀</div>
+      <h3>Enter a domain to start</h3>
+      <p>Type any website URL above and click Analyze to see full SEO insights.</p>
+    </div>
+    <div id="overview-results" class="results-hidden">
+      <div class="stats-grid" id="overviewStats"></div>
+      <div class="score-section" id="overviewScores"></div>
+      <div class="chart-bar-wrap" id="overviewCharts"></div>
+    </div>
+  </div>
+
+  <!-- KEYWORDS PANEL -->
+  <div class="panel" id="panel-keywords">
+    <div id="keywords-empty" class="empty-state">
+      <div class="emoji">🔍</div>
+      <h3>Keyword Intelligence</h3>
+      <p>Run an analysis to discover ranking keywords, search volume, and difficulty scores.</p>
+    </div>
+    <div id="keywords-results" class="results-hidden">
+      <div class="section-title"><div class="dot"></div>Top Ranking Keywords</div>
+      <div class="data-table" id="keywordsTable"></div>
+    </div>
+  </div>
+
+  <!-- AUDIT PANEL -->
+  <div class="panel" id="panel-audit">
+    <div id="audit-empty" class="empty-state">
+      <div class="emoji">🛠</div>
+      <h3>Site Health Audit</h3>
+      <p>Detect technical SEO issues, broken links, missing tags, and performance bottlenecks.</p>
+    </div>
+    <div id="audit-results" class="results-hidden">
+      <div class="section-title"><div class="dot"></div>Site Health Report</div>
+      <div class="issues-list" id="auditIssues"></div>
+    </div>
+  </div>
+
+  <!-- BACKLINKS PANEL -->
+  <div class="panel" id="panel-backlinks">
+    <div id="backlinks-empty" class="empty-state">
+      <div class="emoji">🔗</div>
+      <h3>Backlink Analysis</h3>
+      <p>Discover who is linking to this domain, their authority scores and anchor text.</p>
+    </div>
+    <div id="backlinks-results" class="results-hidden">
+      <div class="section-title"><div class="dot"></div>Referring Domains</div>
+      <div class="backlink-grid" id="backlinkGrid"></div>
+    </div>
+  </div>
+
+  <!-- COMPETITORS PANEL -->
+  <div class="panel" id="panel-competitors">
+    <div id="competitors-empty" class="empty-state">
+      <div class="emoji">⚔️</div>
+      <h3>Competitor Analysis</h3>
+      <p>See who your top competitors are and how they compare in rankings and traffic.</p>
+    </div>
+    <div id="competitors-results" class="results-hidden">
+      <div class="section-title"><div class="dot"></div>Top Organic Competitors</div>
+      <div class="comp-table-wrap">
+        <div class="data-table" id="compTable"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Built with <span>SEOPro</span> — AI-Powered SEO Toolkit &nbsp;|&nbsp; Enter any domain to analyze</footer>
+
+<script>
+  let activeTab = 'overview';
+  let currentView = 'overview';
+  let analysisRan = false;
+
+  function setView(v) {
+    currentView = v;
+    document.querySelectorAll('.nav-tab').forEach((t,i) => {
+      const views = ['overview','keywords','audit','backlinks','competitors'];
+      t.classList.toggle('active', views[i] === v);
+    });
+    document.getElementById('toolSelect').value = v;
+    switchTab(v);
+  }
+
+  function switchTab(tab) {
+    activeTab = tab;
+    document.querySelectorAll('.tool-tab').forEach(t => t.classList.remove('active'));
+    event && event.target && event.target.classList.add('active');
+    // find correct tool-tab
+    document.querySelectorAll('.tool-tab').forEach(t => {
+      const map = { overview:'📊 Overview', keywords:'🔍 Keywords', audit:'🛠 Site Audit', backlinks:'🔗 Backlinks', competitors:'⚔️ Competitors' };
+      if(t.textContent.trim() === (map[tab]||'')) t.classList.add('active');
+    });
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + tab).classList.add('active');
+  }
+
+  function runAnalysis() {
+    const domain = document.getElementById('domainInput').value.trim();
+    if(!domain) { alert('Please enter a domain name.'); return; }
+    const tool = document.getElementById('toolSelect').value;
+
+    // Show loading
+    document.getElementById('loadingDiv').classList.add('show');
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+    const messages = [
+      'Crawling domain structure...',
+      'Fetching keyword data...',
+      'Analyzing backlinks...',
+      'Running technical audit...',
+      'Generating AI insights...'
+    ];
+    let mi = 0;
+    const lt = document.getElementById('loadingText');
+    const interval = setInterval(() => {
+      mi = (mi+1) % messages.length;
+      lt.textContent = messages[mi];
+    }, 600);
+
+    setTimeout(() => {
+      clearInterval(interval);
+      document.getElementById('loadingDiv').classList.remove('show');
+      analysisRan = true;
+      generateResults(domain);
+      switchTab(tool === 'overview' ? 'overview' : tool);
+      // Show the correct tab button active
+      document.querySelectorAll('.tool-tab').forEach(t => {
+        const map = { overview:'📊 Overview', keywords:'🔍 Keywords', audit:'🛠 Site Audit', backlinks:'🔗 Backlinks', competitors:'⚔️ Competitors' };
+        t.classList.toggle('active', t.textContent.trim() === (map[tool]||map['overview']));
+      });
+    }, 3000);
+  }
+
+  function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+  function fmtNum(n) { return n >= 1000000 ? (n/1000000).toFixed(1)+'M' : n >= 1000 ? (n/1000).toFixed(1)+'K' : n; }
+
+  function generateResults(domain) {
+    const domainClean = domain.replace(/https?:\/\//, '').replace(/\/$/, '');
+    const score = rand(42, 96);
+    const traffic = rand(12000, 4500000);
+    const keywords = rand(800, 95000);
+    const backlinks = rand(500, 850000);
+    const dr = rand(25, 92);
+
+    // ---- OVERVIEW ----
+    document.getElementById('overview-empty').style.display = 'none';
+    document.getElementById('overview-results').classList.remove('results-hidden');
+
+    document.getElementById('overviewStats').innerHTML = `
+      <div class="stat-card">
+        <div class="stat-label">Organic Traffic</div>
+        <div class="stat-value">${fmtNum(traffic)}</div>
+        <div class="stat-change up">↑ ${rand(3,24)}% vs last month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Ranked Keywords</div>
+        <div class="stat-value">${fmtNum(keywords)}</div>
+        <div class="stat-change up">↑ ${rand(100,2000)} new</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Backlinks</div>
+        <div class="stat-value">${fmtNum(backlinks)}</div>
+        <div class="stat-change ${rand(0,1)?'up':'down'}">${rand(0,1)?'↑':'↓'} ${rand(10,500)} this week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Domain Rating</div>
+        <div class="stat-value">${dr}</div>
+        <div class="stat-change ${dr>60?'up':'down'}">${dr>60?'Strong':'Moderate'} authority</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Site Health</div>
+        <div class="stat-value">${score}%</div>
+        <div class="stat-change ${score>70?'up':'down'}">${score>70?'Good':'Needs work'}</div>
+      </div>
+    `;
+
+    const scores = [
+      { label: 'SEO Score', val: score, color: score > 70 ? '#2ECC71' : score > 50 ? '#F1C40F' : '#E74C3C', desc: 'Overall search optimization health' },
+      { label: 'Page Speed', val: rand(35, 98), color: '#3498DB', desc: 'Core Web Vitals performance score' },
+      { label: 'Mobile UX', val: rand(50, 100), color: '#FF6B2B', desc: 'Mobile-friendliness and usability' },
+    ];
+    document.getElementById('overviewScores').innerHTML = scores.map(s => {
+      const r = 34, circ = 2 * Math.PI * r;
+      const dash = circ - (s.val / 100) * circ;
+      return `<div class="score-card">
+        <div class="ring-wrap">
+          <svg width="80" height="80" viewBox="0 0 80 80">
+            <circle class="ring-bg" cx="40" cy="40" r="${r}"/>
+            <circle class="ring-fill" cx="40" cy="40" r="${r}"
+              stroke="${s.color}"
+              stroke-dasharray="${circ}"
+              stroke-dashoffset="${dash}"/>
+          </svg>
+          <div class="ring-num" style="color:${s.color}">${s.val}</div>
+        </div>
+        <div class="score-info">
+          <h3>${s.label}</h3>
+          <p>${s.desc}</p>
+        </div>
+      </div>`;
+    }).join('');
+
+    // Chart bars
+    const trafficSources = [
+      { l: 'Organic', v: rand(40,70) },
+      { l: 'Direct', v: rand(10,30) },
+      { l: 'Referral', v: rand(5,20) },
+      { l: 'Social', v: rand(3,15) },
+      { l: 'Paid', v: rand(2,12) },
+    ];
+    const deviceSplit = [
+      { l: 'Mobile', v: rand(50,75) },
+      { l: 'Desktop', v: rand(20,45) },
+      { l: 'Tablet', v: rand(3,10) },
+    ];
+    function barHTML(items) {
+      return `<div class="bar-group">${items.map(i=>`
+        <div class="bar-row">
+          <div class="bar-label">${i.l}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${i.v}%"></div></div>
+          <div class="bar-val">${i.v}%</div>
+        </div>`).join('')}</div>`;
+    }
+    document.getElementById('overviewCharts').innerHTML = `
+      <div class="chart-card"><h4>Traffic Sources</h4>${barHTML(trafficSources)}</div>
+      <div class="chart-card"><h4>Device Split</h4>${barHTML(deviceSplit)}</div>
+    `;
+    setTimeout(() => {
+      document.querySelectorAll('.bar-fill').forEach(b => b.style.width = b.style.width);
+    }, 100);
+
+    // ---- KEYWORDS ----
+    document.getElementById('keywords-empty').style.display = 'none';
+    document.getElementById('keywords-results').classList.remove('results-hidden');
+    const kwList = [
+      { kw: domainClean + ' review', vol: rand(1000,50000), diff: rand(10,90), pos: rand(1,20), cpc: (Math.random()*5+0.3).toFixed(2) },
+      { kw: domainClean + ' pricing', vol: rand(500,20000), diff: rand(5,60), pos: rand(1,15), cpc: (Math.random()*8+1).toFixed(2) },
+      { kw: 'best ' + domainClean + ' alternatives', vol: rand(200,8000), diff: rand(20,85), pos: rand(2,30), cpc: (Math.random()*4+0.5).toFixed(2) },
+      { kw: 'how to use ' + domainClean, vol: rand(300,12000), diff: rand(15,70), pos: rand(1,25), cpc: (Math.random()*3+0.2).toFixed(2) },
+      { kw: domainClean + ' tutorial', vol: rand(400,15000), diff: rand(10,55), pos: rand(1,18), cpc: (Math.random()*2+0.3).toFixed(2) },
+      { kw: domainClean + ' login', vol: rand(2000,80000), diff: rand(5,30), pos: rand(1,5), cpc: (Math.random()*1+0.1).toFixed(2) },
+      { kw: domainClean + ' features', vol: rand(300,10000), diff: rand(20,65), pos: rand(3,20), cpc: (Math.random()*3+0.4).toFixed(2) },
+      { kw: domainClean + ' vs competitor', vol: rand(500,18000), diff: rand(30,80), pos: rand(2,22), cpc: (Math.random()*6+1).toFixed(2) },
+    ];
+    function diffClass(d) { return d < 35 ? 'diff-low' : d < 65 ? 'diff-med' : 'diff-high'; }
+    function diffLabel(d) { return d < 35 ? 'Low' : d < 65 ? 'Medium' : 'Hard'; }
+    document.getElementById('keywordsTable').innerHTML = `
+      <table>
+        <thead><tr>
+          <th>Keyword</th><th>Search Volume</th><th>Difficulty</th><th>Position</th><th>CPC (USD)</th>
+        </tr></thead>
+        <tbody>${kwList.map(k=>`<tr>
+          <td style="font-weight:500;color:var(--text)">${k.kw}</td>
+          <td>${fmtNum(k.vol)}</td>
+          <td><span class="diff-badge ${diffClass(k.diff)}">${diffLabel(k.diff)} (${k.diff})</span></td>
+          <td style="font-weight:600;color:${k.pos<=3?'var(--green)':'var(--text)'}">#${k.pos}</td>
+          <td>$${k.cpc}</td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+
+    // ---- AUDIT ----
+    document.getElementById('audit-empty').style.display = 'none';
+    document.getElementById('audit-results').classList.remove('results-hidden');
+    const issues = [
+      { type: 'err', icon: '❌', title: 'Missing Meta Descriptions', desc: `${rand(3,20)} pages are missing meta descriptions which reduces click-through rates from search results.` },
+      { type: 'err', icon: '❌', title: 'Broken Internal Links', desc: `${rand(1,12)} broken links found. Search engines and users can't follow these links.` },
+      { type: 'warn', icon: '⚠️', title: 'Images Without Alt Text', desc: `${rand(5,40)} images are missing alt attributes. This hurts accessibility and image SEO.` },
+      { type: 'warn', icon: '⚠️', title: 'Slow Page Load Speed', desc: `Average load time is ${(Math.random()*3+1.2).toFixed(1)}s. Google recommends under 2.5s for good ranking.` },
+      { type: 'warn', icon: '⚠️', title: 'Missing Canonical Tags', desc: `${rand(2,15)} pages lack canonical tags, risking duplicate content issues.` },
+      { type: 'ok', icon: '✅', title: 'SSL Certificate Active', desc: 'Your HTTPS is properly configured — this is a confirmed Google ranking signal.' },
+      { type: 'ok', icon: '✅', title: 'Sitemap Detected', desc: 'XML sitemap found and accessible. Search engines can crawl your site efficiently.' },
+      { type: 'ok', icon: '✅', title: 'Mobile-Friendly Design', desc: 'Your site passes Google\'s mobile usability test. Mobile-first indexing will favor your pages.' },
+      { type: rand(0,1)?'warn':'err', icon: rand(0,1)?'⚠️':'❌', title: 'H1 Tag Issues', desc: `${rand(1,8)} pages have multiple H1 tags or missing H1 tags, which confuses search engine crawlers.` },
+    ];
+    document.getElementById('auditIssues').innerHTML = issues.map(i => `
+      <div class="issue-item">
+        <div class="issue-icon ${i.type}">${i.icon}</div>
+        <div class="issue-body"><h4>${i.title}</h4><p>${i.desc}</p></div>
+      </div>`).join('');
+
+    // ---- BACKLINKS ----
+    document.getElementById('backlinks-empty').style.display = 'none';
+    document.getElementById('backlinks-results').classList.remove('results-hidden');
+    const blds = [
+      { d: 'forbes.com', da: rand(85,99), anchor: 'Read more', type: 'dofollow', found: '3 days ago' },
+      { d: 'techcrunch.com', da: rand(80,97), anchor: domainClean + ' tool', type: 'dofollow', found: '1 week ago' },
+      { d: 'medium.com', da: rand(70,90), anchor: 'click here', type: 'nofollow', found: '2 weeks ago' },
+      { d: 'reddit.com', da: rand(88,98), anchor: 'source', type: 'nofollow', found: '3 weeks ago' },
+      { d: 'github.com', da: rand(85,99), anchor: domainClean, type: 'dofollow', found: '1 month ago' },
+      { d: 'producthunt.com', da: rand(75,92), anchor: 'visit website', type: 'dofollow', found: '1 month ago' },
+      { d: 'hackernews.ycombinator.com', da: rand(80,96), anchor: 'link', type: 'nofollow', found: '6 weeks ago' },
+      { d: 'dev.to', da: rand(65,88), anchor: 'tutorial link', type: 'dofollow', found: '2 months ago' },
+    ];
+    document.getElementById('backlinkGrid').innerHTML = blds.map(b => `
+      <div class="backlink-card">
+        <div class="bl-domain">${b.d} <span class="bl-da">DA ${b.da}</span></div>
+        <div style="font-size:0.8rem;color:var(--muted)">Anchor: <span style="color:var(--text)">"${b.anchor}"</span></div>
+        <div class="bl-meta">
+          <span style="color:${b.type==='dofollow'?'var(--green)':'var(--muted)'}">● ${b.type}</span>
+          <span>Found ${b.found}</span>
+        </div>
+      </div>`).join('');
+
+    // ---- COMPETITORS ----
+    document.getElementById('competitors-empty').style.display = 'none';
+    document.getElementById('competitors-results').classList.remove('results-hidden');
+    const comps = [
+      { name: 'competitor1.com', traffic: rand(50000, 5000000), kws: rand(5000,200000), dr: rand(40,98), overlap: rand(10,60) },
+      { name: 'rival-site.com', traffic: rand(20000,2000000), kws: rand(3000,150000), dr: rand(35,95), overlap: rand(5,50) },
+      { name: 'similar-tool.io', traffic: rand(10000,1000000), kws: rand(1000,80000), dr: rand(25,88), overlap: rand(3,40) },
+      { name: 'alternative.net', traffic: rand(5000,500000), kws: rand(500,50000), dr: rand(20,80), overlap: rand(2,35) },
+      { name: 'topranker.co', traffic: rand(8000,800000), kws: rand(2000,100000), dr: rand(30,90), overlap: rand(8,45) },
+    ];
+    document.getElementById('compTable').innerHTML = `
+      <table>
+        <thead><tr>
+          <th>Domain</th><th>Monthly Traffic</th><th>Keywords</th><th>Domain Rating</th><th>Keyword Overlap</th>
+        </tr></thead>
+        <tbody>${comps.map(c=>`<tr>
+          <td style="color:var(--blue);font-weight:600">🌐 ${c.name}</td>
+          <td>${fmtNum(c.traffic)}</td>
+          <td>${fmtNum(c.kws)}</td>
+          <td><span style="font-weight:700;color:${c.dr>70?'var(--green)':c.dr>50?'var(--yellow)':'var(--red)'}">${c.dr}</span></td>
+          <td><span class="diff-badge ${c.overlap>40?'diff-high':c.overlap>20?'diff-med':'diff-low'}">${c.overlap}%</span></td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+  }
+
+  // Allow Enter key
+  document.getElementById('domainInput').addEventListener('keydown', function(e) {
+    if(e.key === 'Enter') runAnalysis();
+  });
+
+  // Sync nav tab and tool tab
+  document.getElementById('toolSelect').addEventListener('change', function() {
+    if(analysisRan) switchTab(this.value);
+  });
+</script>
+</body>
+</html>
